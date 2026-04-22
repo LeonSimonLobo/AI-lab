@@ -1,15 +1,11 @@
-from collections import deque
-
 def bfs(graph, start, end):
-    q = deque()
-    q.append((start, 0, [start], {start}))
-
-    results = []
+    q=[(start, 0, [start], {start})]  
+    results=[]
 
     while q:
-        node, cost, path, visited = q.popleft()
+        node, cost, path, visited=q.pop(0)  
 
-        if node == end:
+        if node==end:
             results.append((path, cost))
             continue
 
@@ -18,18 +14,18 @@ def bfs(graph, start, end):
                 q.append((
                     neighbour,
                     cost + weight,
-                    path + [neighbour],        # new path
-                    visited | {neighbour}      # new visited set
+                    path + [neighbour],
+                    visited | {neighbour}
                 ))
 
     return results
 
 
 def dfs(graph, start, end):
-    results = []
+    results=[]
 
     def df_search(node, cost, path, visited):
-        if node == end:
+        if node==end:
             results.append((path[:], cost))
             return
 
@@ -38,17 +34,16 @@ def dfs(graph, start, end):
                 df_search(
                     neighbour,
                     cost + weight,
-                    path + [neighbour],       # new path
-                    visited | {neighbour}     # new visited set
+                    path + [neighbour],
+                    visited | {neighbour}
                 )
 
     df_search(start, 0, [start], {start})
     return results
 
 
-
 def main():
-    graph = {
+    graph={
     "Syracuse": [("Buffalo",150),("Boston",312),("New York",254),("Philadelphia",253)],
     "Buffalo": [("Syracuse",150),("Detroit",256),("Cleveland",189),("Pittsburgh",215)],
     "Detroit": [("Buffalo",256),("Chicago",283)],
@@ -62,24 +57,25 @@ def main():
     "Providence": [("New York",181),("Boston",50)],
     "Boston": [("Syracuse",312),("Providence",50),("Portland",107)],
     "Portland": [("Boston",107)],
-    "Chicago": []}
-    algo=int(input("Enter 1 for BFS, 2 for DFS:"))
-    start=input("Enter starting city:").strip().capitalize()
-    end=input("Enter end city:").strip().capitalize()
+    "Chicago": []
+    }
+
+    algo=int(input("Enter 1 for BFS, 2 for DFS: "))
+    start=input("Enter starting city: ").strip().capitalize()
+    end=input("Enter end city: ").strip().capitalize()
+
     if algo==1:
-        bfs_costs=bfs(graph,start,end)
+        bfs_costs=bfs(graph, start, end)
         for path, cost in bfs_costs:
             for city in path:
-                print(city,"-",end=" ")
+                print(city, "-", end=" ")
             print(cost)
     else:
-        dfs_costs=dfs(graph,start,end)
+        dfs_costs=dfs(graph, start, end)
         for path, cost in dfs_costs:
             for city in path:
-                print(city,"-",end=" ")
+                print(city, "-", end=" ")
             print(cost)
-
-    
 
 
 if __name__=='__main__':
